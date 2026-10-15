@@ -1,0 +1,16 @@
+<div class="header-bar">
+    <h2>Projetos</h2>
+    <a href="{% url 'criar_projeto' %}" class="btn btn-success">+ Novo Projeto</a>
+</div>
+{% if messages %}{% for m in messages %}<div class="alert">{{ m }}</div>{% endfor %}{% endif %}
+<div class="cards-grid">
+  {% for projeto in projetos %}
+    <div class="card">
+      <h3>{{ projeto.nome }}</h3>
+      <p>{{ projeto.descricao }}</p>
+      <p><strong>Início:</strong> {{ projeto.data_inicio }}</p>
+    </div>
+  {% empty %}
+    <p>Nenhum projeto cadastrado.</p>
+  {% endfor %}
+</div>
