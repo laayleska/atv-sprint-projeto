@@ -1,34 +1,39 @@
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .models import Projeto
-from .forms import ProjetoForm
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Tarefa
+from .forms import TarefaForm
 
-def listar_projetos(request):
-    projetos = Projeto.objects.all()
-    return render(request, 'core/listar_projetos.html', {'projetos': projetos})
+# Listar Tarefas
+def listar_tarefas(request):
+    tarefas = Tarefa.objects.all()
+    return render(request, 'core/listar_tarefas.html', {'tarefas': tarefas})
 
-def criar_projeto(request):
-    form = ProjetoForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        messages.success(request, 'Projeto criado com sucesso!')
-        return redirect('listar_projetos')
-    return render(request, 'core/form_projeto.html', {'form': form, 'titulo': 'Novo Projeto'})
-
-def editar_projeto(request, pk):
-    projeto = get_object_or_404(Projeto, pk=pk)
-    form = ProjetoForm(request.POST or None, instance=projeto)
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        messages.success(request, 'Projeto atualizado com sucesso!')
-        return redirect('listar_projetos')
-    return render(request, 'core/form_projeto.html', {'form': form, 'titulo': 'Editar Projeto'})
-
-def eliminar_projeto(request, pk):
-    projeto = get_object_or_404(Projeto, pk=pk)
+# Criar Tarefa
+def criar_tarefa(request):
     if request.method == 'POST':
-        projeto.delete()
-        messages.success(request, 'Projeto excluído com sucesso!')
-        return redirect('listar_projetos')
-    return render(request, 'core/confirmar_eliminar_projeto.html', {'projeto': projeto})
+        form = TarefaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_tarefas')
+    else:
+        form = TarefaForm()
+    return render(request, 'core/form_tarefa.html', {'form': form, 'titulo_pagina': 'Nova Tarefa'})
+
+# Editar Tarefa
+def editar_tarefa(request, pk):
+    tarefa = get_object_or_404(Tarefa, pk=pk)
+    if request.method == 'POST':
+        form = TarefaForm(request.POST, instance=tarefa)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_tarefas')
+    else:
+        form = TarefaForm(instance=tarefa)
+    return render(request, 'core/form_tarefa.html', {'form': form, 'titulo_pagina': 'Editar Tarefa'})
+
+# Eliminar Tarefa
+def eliminar_tarefa(request, pk):
+    tarefa = get_object_or_404(Tarefa, pk=pk)
+    if request.method == 'POST':
+        tarefa.delete()
+        return redirect('listar_tarefas')
+    return render(request, 'core/confirmar_eliminar_tarefa.html', {'tarefa': tarefa})
