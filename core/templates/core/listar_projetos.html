@@ -1,25 +1,30 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
 <div class="header-bar">
     <h2>Projetos</h2>
     <a href="{% url 'criar_projeto' %}" class="btn btn-success">+ Novo Projeto</a>
 </div>
-{% if messages %}{% for m in messages %}<div class="alert">{{ m }}</div>{% endfor %}{% endif %}
+
+{% if messages %}
+    {% for m in messages %}
+        <div class="alert">{{ m }}</div>
+    {% endfor %}
+{% endif %}
+
 <div class="cards-grid">
-
-  
-  {% for projeto in projetos %}
-    <div class="card">
-      <h3>{{ projeto.nome }}</h3>
-      <p>{{ projeto.descricao }}</p>
-      <p><strong>Início:</strong> {{ projeto.data_inicio }}</p>
-    </div>
-
-    <div class="card-actions">
-      <a href="{% url 'editar_projeto' projeto.pk %}" class="btn btn-primary btn-sm">Editar</a>
-      <a href="{% url 'eliminar_projeto' projeto.pk %}" class="btn btn-danger btn-sm">Excluir</a>
-    </div>
-  {% empty %}
-    <p>Nenhum projeto cadastrado.</p>
-  {% endfor %}
-
-  
+    {% for projeto in projetos %}
+        <div class="card">
+            <h3>{{ projeto.nome }}</h3>
+            <p>{{ projeto.descricao }}</p>
+            <p><strong>Início:</strong> {{ projeto.data_inicio }}</p>
+            <div class="card-actions">
+                <a href="{% url 'editar_projeto' projeto.pk %}" class="btn btn-primary btn-sm">Editar</a>
+                <a href="{% url 'eliminar_projeto' projeto.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+            </div>
+        </div>
+    {% empty %}
+        <p>Nenhum projeto cadastrado.</p>
+    {% endfor %}
 </div>
+{% endblock %}
