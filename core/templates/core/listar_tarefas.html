@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="header-bar">
+    <h2>Tarefas</h2>
+    <a href="{% url 'criar_tarefa' %}" class="btn btn-success">+ Nova Tarefa</a>
+</div>
+
+<div class="cards-grid">
+    {% for tarefa in tarefas %}
+        <div class="card">
+            <h3>{{ tarefa.titulo }}</h3>
+            <p>{{ tarefa.descricao }}</p>
+            <p><strong>Projeto:</strong> {{ tarefa.projeto.nome }}</p>
+            <p><strong>Status:</strong> {{ tarefa.get_status_display }}</p>
+            <div class="card-actions">
+                <a href="{% url 'editar_tarefa' tarefa.pk %}" class="btn btn-primary btn-sm">Editar</a>
+                <a href="{% url 'eliminar_tarefa' tarefa.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+            </div>
+        </div>
+    {% empty %}
+        <p>Nenhuma tarefa cadastrada.</p>
+    {% endfor %}
+</div>
+{% endblock %}
